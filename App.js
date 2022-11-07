@@ -1,15 +1,35 @@
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import { createAppContainer } from "react-navigation";
-import HomeScreen from "./screens/HomeScreen";
+import { createBottomTabNavigator } from "react-navigation-tabs";
+import SigninScreen from "./screens/SigninScreen";
+import SignupScreen from "./screens/SignupScreen";
+import TrackListScreen from "./screens/TrackListScreen";
+import TrackCreateScreen from "./screens/TrackCreateScreen";
+import AccountScreen from "./screens/AccountScreen";
+import TrackDetailScreen from "./screens/TrackDetailScreen";
+import { Provider as AuthProvider } from "./context/AuthContext";
 
-const navigation = createStackNavigator(
-  {
-    Home: HomeScreen,
-  },
-  {
-    initialRouteName: "Home",
-    defaultNavigationOptions: { title: "Life Tracker" },
-  }
-);
+const switchNavigator = createSwitchNavigator({
+  loginFlow: createStackNavigator({
+    // Signup: SignupScreen,
+    Signin: SigninScreen,
+  }),
+  mainFlow: createBottomTabNavigator({
+    Accout: AccountScreen,
+    TrackCreate: TrackCreateScreen,
+    TrackListFlow: createStackNavigator({
+      TrackDetail: TrackDetailScreen,
+      TrackList: TrackListScreen,
+    }),
+  }),
+});
 
-export default createAppContainer(navigation);
+const App = createAppContainer(switchNavigator);
+
+export default () => {
+  return (
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  );
+};
