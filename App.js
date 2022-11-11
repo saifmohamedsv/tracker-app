@@ -1,21 +1,24 @@
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
-import SigninScreen from "./screens/SigninScreen";
-import SignupScreen from "./screens/SignupScreen";
-import TrackListScreen from "./screens/TrackListScreen";
-import TrackCreateScreen from "./screens/TrackCreateScreen";
-import AccountScreen from "./screens/AccountScreen";
-import TrackDetailScreen from "./screens/TrackDetailScreen";
-import { Provider as AuthProvider } from "./context/AuthContext";
+import SigninScreen from "./src/screens/SigninScreen";
+import SignupScreen from "./src/screens/SignupScreen";
+import TrackListScreen from "./src/screens/TrackListScreen";
+import TrackCreateScreen from "./src/screens/TrackCreateScreen";
+import AccountScreen from "./src/screens/AccountScreen";
+import TrackDetailScreen from "./src/screens/TrackDetailScreen";
+import { Provider as AuthProvider } from "./src/context/AuthContext.js";
+import { setNavigator } from "./src/navigationRef";
+import ResolveAuthScreen from "./src/screens/LoadingScreenn";
 
 const switchNavigator = createSwitchNavigator({
   loginFlow: createStackNavigator({
-    // Signup: SignupScreen,
+    Resolve: ResolveAuthScreen,
+    Signup: SignupScreen,
     Signin: SigninScreen,
   }),
   mainFlow: createBottomTabNavigator({
-    Accout: AccountScreen,
+    Account: AccountScreen,
     TrackCreate: TrackCreateScreen,
     TrackListFlow: createStackNavigator({
       TrackDetail: TrackDetailScreen,
@@ -29,7 +32,7 @@ const App = createAppContainer(switchNavigator);
 export default () => {
   return (
     <AuthProvider>
-      <App />
+      <App ref={setNavigator} />
     </AuthProvider>
   );
 };

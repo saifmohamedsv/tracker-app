@@ -1,14 +1,14 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer, createContext } from "react";
 
-export default (reducer, actions, state) => {
-  const Context = React.useContext();
+export default (reducer, actions, initState) => {
+  const Context = createContext();
 
   const Provider = ({ children }) => {
-    const [state, dispatch] = useReducer(reducer, state);
+    const [state, dispatch] = useReducer(reducer, initState);
 
     let boundActions = {};
 
-    for (const action in actions) {
+    for (let action in actions) {
       boundActions[action] = actions[action](dispatch);
     }
 

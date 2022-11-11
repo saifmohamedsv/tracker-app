@@ -1,16 +1,16 @@
-import { StyleSheet, View } from "react-native";
 import React, { useState } from "react";
+import { StyleSheet } from "react-native";
 import { Text, Button, Input } from "@rneui/themed";
-import Spacer from "../components/Spacer";
-const SignupScreen = () => {
+import Spacer from "./Spacer";
+
+const AuthForm = ({ title, onSubmit, errorMessage, buttonText }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   return (
-    <View style={styles.container}>
+    <>
       <Spacer>
         <Text h3 style={{ textAlign: "center" }}>
-          Signup for tracker
+          {title}
         </Text>
       </Spacer>
 
@@ -23,6 +23,7 @@ const SignupScreen = () => {
           onChangeText={setEmail}
         />
       </Spacer>
+
       <Spacer>
         <Input
           label="Password"
@@ -33,24 +34,25 @@ const SignupScreen = () => {
           onChangeText={setPassword}
         />
       </Spacer>
+
+      {errorMessage ? (
+        <Spacer>
+          <Text style={styles.errorMessage}>{errorMessage}</Text>
+        </Spacer>
+      ) : null}
+
       <Spacer>
-        <Button title={"Signup"} />
+        <Button title={buttonText} onPress={() => onSubmit(email, password)} />
       </Spacer>
-    </View>
+    </>
   );
 };
 
-export default SignupScreen;
+export default AuthForm;
 
-SignupScreen.navigationOptions = () => {
-  return {
-    headerShown: false,
-  };
-};
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    display: "flex",
-    justifyContent: "center",
+  errorMessage: {
+    fontSize: 16,
+    color: "red",
   },
 });
