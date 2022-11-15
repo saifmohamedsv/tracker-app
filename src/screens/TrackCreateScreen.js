@@ -1,14 +1,31 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useContext } from "react";
+import { StyleSheet } from "react-native";
+import { Text } from "@rneui/themed";
+import { withNavigationFocus, SafeAreaView } from "react-navigation";
+//
+import Map from "../components/Map";
+import Spacer from "../components/Spacer";
+import useLocation from "../hooks/useLocation";
+import { Context } from "../context/LocationContext";
 
-const TrackCreateScreen = () => {
+const TrackCreateScreen = withNavigationFocus(({ isFocused }) => {
+  const { addLocation } = useContext(Context);
+  const [err] = useLocation(addLocation, isFocused);
+
   return (
-    <View>
-      <Text>TrackCreateScreen</Text>
-    </View>
-  )
-}
+    <SafeAreaView forceInset={{ top: "never" }}>
+      <Map />
+      {err && (
+        <Spacer>
+          <Text h3 style={{ color: "red" }}>
+            Please Accept Location Permission.
+          </Text>
+        </Spacer>
+      )}
+    </SafeAreaView>
+  );
+});
 
-export default TrackCreateScreen
+export default TrackCreateScreen;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

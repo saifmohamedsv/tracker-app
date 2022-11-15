@@ -6,9 +6,7 @@ const ResolveAuthScreen = () => {
   const { tryLocalSignin } = useContext(AuthContext);
 
   useEffect(() => {
-    setTimeout(() => {
-      tryLocalSignin();
-    }, 1200);
+    tryLocalSignin();
   }, []);
 
   return (
